@@ -4,6 +4,7 @@ import 'package:flutter_simple_meals_app/category_item.dart';
 import 'package:flutter_simple_meals_app/dummy_data.dart';
 
 class CategoriesScreen extends StatelessWidget {
+  static const routeName = '/';
   const CategoriesScreen({Key? key}) : super(key: key);
 
   @override
