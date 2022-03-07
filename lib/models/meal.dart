@@ -40,4 +40,10 @@ class Meal {
     required this.isVegan,
     required this.isVegetarian,
   });
+
+  @override
+  String toString() {
+    print("id $id title $title glutenfree $isGlutenFree");
+    return super.toString();
+  }
 }
