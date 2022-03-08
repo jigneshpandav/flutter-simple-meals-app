@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_simple_meals_app/dummy_data.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 import '../models/meal.dart';
 
 class MealDetailScreen extends StatelessWidget {
   static const routeName = '/meal-details';
+  final Function toggleFavorite;
+  final Function isMealFavorite;
 
-  const MealDetailScreen({Key? key}) : super(key: key);
+  const MealDetailScreen({
+    Key? key,
+    required this.toggleFavorite,
+    required this.isMealFavorite,
+  }) : super(key: key);
 
   Widget buildSectionTitle(BuildContext context, String text) {
     return Container(
@@ -36,6 +43,7 @@ class MealDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final String mealId = ModalRoute.of(context)?.settings.arguments as String;
     final Meal meal = DUMMY_MEALS.firstWhere((meal) => meal.id == mealId);
+
     return Scaffold(
       appBar: AppBar(title: Text(meal.title)),
       body: SingleChildScrollView(
@@ -82,12 +90,30 @@ class MealDetailScreen extends StatelessWidget {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.delete),
-        onPressed: () {
-          Navigator.of(context).pop(mealId);
-        },
-      ),
+      floatingActionButton: SpeedDial(icon: Icons.call_to_action, children: [
+        SpeedDialChild(
+          child: const Icon(
+            Icons.delete,
+            color: Colors.white,
+          ),
+          label: 'Delete',
+          backgroundColor: Colors.redAccent,
+          onTap: () {
+            Navigator.of(context).pop(mealId);
+          },
+        ),
+        SpeedDialChild(
+          child: Icon(
+            isMealFavorite(mealId) ? Icons.favorite : Icons.favorite_border,
+            color: Colors.black87,
+          ),
+          label: 'Favorite',
+          backgroundColor: Colors.amberAccent,
+          onTap: () {
+            toggleFavorite(mealId);
+          },
+        ),
+      ]),
     );
   }
 }
